@@ -3,7 +3,7 @@
         "ar": "تستاهلين",
         "en": "Tastahleen"
     },
-    "repository": "https://github.com/kodex9962/tastahleen",
+    "repository": "https://github.com/SallaApp/theme-raed",
     "author_email": "man20172024@gmail.com",
     "features": [
         "mega-menu",
@@ -1132,9 +1132,9 @@
             ]
         }
     ],
-    "support_url": "https://salla.sa/testahleen",
+    "support_url": "https://salla.com/",
     "description": {
-        "ar": "",
-        "en": ""
+        "ar": "مجموعة كبيرة من المزايا لدعم تجارتك وتقديم تجربة تسوق مثيرة لعملائك",
+        "en": "A wide range of features to support your business and provide an exciting shopping experience for your customers"
     }
 }
