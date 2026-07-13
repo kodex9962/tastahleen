@@ -648,3 +648,153 @@ html[dir="ltr"] .ci-name { font-family: var(--font-en-display); }
   .cinema-break { height: 72vh; min-height: 420px; }
   .footer-nav { grid-template-columns: 1fr 1fr; }
 }
+
+/* ============================================================
+   SALLA INTEGRATION LAYER — make Salla components wear the
+   approved Tastahleen / RL-reference design.
+   ============================================================ */
+
+/* ---------- 1. Product grid: strict 2x2 editorial ---------- */
+.ts-salla-grid salla-products-list { display: block; }
+.ts-salla-grid salla-products-list > div,
+.ts-salla-grid .s-products-list-wrapper {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: clamp(24px, 3.6vw, 56px);
+  row-gap: clamp(48px, 6vw, 88px);
+}
+.ts-salla-grid custom-salla-product-card {
+  display: block;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+/* image window — tall editorial crop on stone bg */
+.ts-salla-grid .s-product-card-image,
+.ts-salla-grid .s-product-card-image-full {
+  aspect-ratio: 3 / 4.1;
+  height: auto !important;
+  background: #F3F0E8;
+  border-radius: 0 !important;
+  overflow: hidden;
+}
+.ts-salla-grid .s-product-card-image img,
+.ts-salla-grid .s-product-card-image-full img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 1.4s cubic-bezier(0.22, 0.61, 0.21, 1);
+}
+.ts-salla-grid custom-salla-product-card:hover .s-product-card-image img { transform: scale(1.035); }
+
+/* strip marketplace clutter */
+.ts-salla-grid .s-product-card-promotion-title,
+.ts-salla-grid .s-product-card-rating,
+.ts-salla-grid .s-product-card-quantity,
+.ts-salla-grid .s-product-card-content-subtitle,
+.ts-salla-grid .s-button-wishlist,
+.ts-salla-grid .s-product-card-wishlist-btn,
+.ts-salla-grid [class*="wishlist"] { display: none !important; }
+
+/* typography — serif name, quiet price */
+.ts-salla-grid .s-product-card-content { padding: 18px 2px 8px; background: transparent; }
+.ts-salla-grid .s-product-card-content-title,
+.ts-salla-grid .s-product-card-content-title a {
+  font-family: 'Amiri', serif !important;
+  font-size: 21px !important;
+  font-weight: 400 !important;
+  color: #071D25 !important;
+  line-height: 1.6;
+}
+.ts-salla-grid .s-product-card-content-sub { margin-top: 8px; }
+.ts-salla-grid .s-product-card-price,
+.ts-salla-grid .s-product-card-sale-price {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+  color: #262626 !important;
+  font-weight: 400 !important;
+}
+.ts-salla-grid .s-product-card-starting-price { display: none !important; }
+
+/* add-to-cart — quiet petrol text button, RL-style underline */
+.ts-salla-grid .s-product-card-content-footer salla-add-product-button,
+.ts-salla-grid .s-product-card-content-footer { margin-top: 6px; }
+.ts-salla-grid salla-add-product-button .s-button-element,
+.ts-salla-grid salla-add-product-button button {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid #B8A06A !important;
+  border-radius: 0 !important;
+  color: #071D25 !important;
+  font-size: 12.5px !important;
+  letter-spacing: 0.08em;
+  padding: 0 0 4px 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+}
+.ts-salla-grid salla-add-product-button button:hover { color: #B8A06A !important; }
+
+/* mobile: keep the 2x2 rhythm, tightened */
+@media (max-width: 760px) {
+  .ts-salla-grid salla-products-list > div,
+  .ts-salla-grid .s-products-list-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 12px;
+    row-gap: 34px;
+  }
+  .ts-salla-grid .s-product-card-image { aspect-ratio: 3 / 4.3; }
+  .ts-salla-grid .s-product-card-content { padding: 12px 1px 4px; }
+  .ts-salla-grid .s-product-card-content-title,
+  .ts-salla-grid .s-product-card-content-title a { font-size: 15px !important; line-height: 1.4; }
+  .ts-salla-grid .s-product-card-price,
+  .ts-salla-grid .s-product-card-sale-price { font-size: 12px !important; }
+}
+
+/* ---------- 2. Header: petrol topbar + thin quiet nav ---------- */
+.store-header .top-navbar {
+  background: #071D25 !important;
+  color: #F5F0EA;
+  min-height: 34px;
+}
+.store-header .top-navbar a,
+.store-header .top-navbar span,
+.store-header .top-navbar li,
+.store-header .top-navbar .btn--rounded-gray {
+  color: #F5F0EA !important;
+  background: transparent !important;
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+}
+.store-header .header-search { display: none !important; }
+.store-header .main-nav-container {
+  box-shadow: none !important;
+  border-bottom: 1px solid #E2DED6;
+  background: rgba(250, 248, 243, 0.96) !important;
+}
+#mainnav .navbar-brand img { max-height: 44px; width: auto; }
+#mainnav a { color: #262626; }
+#mainnav .header-btn__icon { color: #071D25; }
+
+/* ---------- 3. Footer: petrol brand block ---------- */
+.store-footer {
+  background: #071D25 !important;
+  color: #F5F0EA;
+}
+.store-footer * { color: #F5F0EA; }
+.store-footer a { color: rgba(245, 240, 234, 0.85) !important; }
+.store-footer a:hover { color: #B8A06A !important; }
+.store-footer h3, .store-footer h4, .store-footer .footer-title, .store-footer strong {
+  color: #B8A06A !important;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+.store-footer input {
+  color: #262626 !important;
+  background: #F5F0EA !important;
+}
+.store-footer .store-footer__inner { border: 0; }
+
+/* body base */
+body { background: #FAF8F3; }
