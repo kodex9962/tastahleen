@@ -1,7 +1,7 @@
 {
     "blocks":  {
                    "header":  {
-                                  "cart":  "السلة"
+                                  "cart":  "حقيبة التسوق"
                               },
                    "appBanner":  {
                                      "download_now":  "حمله الان"
@@ -9,7 +9,8 @@
                },
     "pages":  {
                   "cart":  {
-                               "cart_options":  "خيارات السلة"
+                               "cart_options":  "خيارات الحقيبة",
+                               "add_to_cart":  "أضيفي إلى الحقيبة"
                            },
                   "order":  {
                                 "can_edit_or_delete_your_review_within":  "يمكنك تعديل أو حذف تقييمك خلال",
