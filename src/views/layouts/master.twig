@@ -83,10 +83,12 @@
         try {
           var pref = localStorage.getItem('tsx-lang');
           var cur = '{{ language.code }}';
+          var base = new URL('{{ store.url }}').pathname.replace(/\/$/, '');
           var p = location.pathname;
-          if (!pref && cur === 'ar' && p.indexOf('/ar') !== 0) {
+          var inLocale = p.indexOf(base + '/ar') === 0 || p.indexOf(base + '/en') === 0;
+          if (!pref && cur === 'ar' && !inLocale) {
             localStorage.setItem('tsx-lang', 'en');
-            location.replace('/en' + (p === '/' ? '' : p) + location.search);
+            location.replace('{{ store.url }}'.replace(/\/$/, '') + '/en' + p.slice(base.length) + location.search);
           } else if (!pref) {
             localStorage.setItem('tsx-lang', cur);
           }

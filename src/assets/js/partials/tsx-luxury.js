@@ -117,7 +117,8 @@
       const box = toast.querySelector('[class*="wrapper"], .s-add-product-toast');
       if (!box || box.querySelector('.tsx-toast-checkout')) return;
       const a = document.createElement('a');
-      a.href = salla.url.get('cart'); a.className = 'tsx-toast-checkout';
+      a.href = (salla.config.get('store.url') || '').replace(/\/$/, '') + '/cart';
+      a.className = 'tsx-toast-checkout';
       a.textContent = t('Checkout', 'إتمام الطلب');
       const c = document.createElement('a');
       c.href = '#'; c.className = 'tsx-toast-continue';
