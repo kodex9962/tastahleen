@@ -61,6 +61,8 @@
                       <custom-main-menu></custom-main-menu>
                   </div>
                   <div class="flex items-center justify-end my-2.5">
+                      {# mobile-only search trigger (opens Salla's native search modal); the inline bar lives in the desktop top-navbar #}
+                      <salla-search class="header-search-mobile lg:hidden"></salla-search>
                       <salla-user-menu avatar-only show-header show-trigger></salla-user-menu>
                       <salla-cart-summary class="ml-4 rtl:ml-[unset] rtl:mr-4">
                         <i slot="icon" class="header-btn__icon icon sicon-shopping-bag"></i>

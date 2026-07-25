@@ -79,7 +79,7 @@ html[dir="ltr"] .btn { font-family: var(--font-en-body); letter-spacing: 0.18em;
 /* ============ 1 · HERO ============ */
 .hero {
   position: relative;
-  height: clamp(540px, 86svh, 920px);
+  height: clamp(520px, 80svh, 840px);
   overflow: clip;
   background: var(--bg-2); /* light fallback while the film loads */
 }
@@ -93,7 +93,8 @@ html[dir="ltr"] .btn { font-family: var(--font-en-body); letter-spacing: 0.18em;
 @keyframes heroSettle { to { transform: scale(1); } }
 .hero-scrim {
   position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(7,29,37,0.38), transparent 52%);
+  /* localized: only the caption zone deepens; upper imagery stays clean */
+  background: linear-gradient(to top, rgba(7,29,37,0.55), rgba(7,29,37,0.2) 30%, transparent 55%);
 }
 .hero-copy {
   position: absolute; inset-inline: var(--pad); bottom: clamp(44px, 9vh, 92px);
@@ -108,6 +109,7 @@ html[dir="ltr"] .btn { font-family: var(--font-en-body); letter-spacing: 0.18em;
   color: #fff;
   font-size: clamp(44px, 7vw, 88px);
   animation-delay: 0.3s;
+  text-shadow: 0 2px 26px rgba(7,29,37,0.5), 0 1px 2px rgba(7,29,37,0.4);
 }
 html[dir="ltr"] .hero-title .line.ar-display { letter-spacing: 0.08em; }
 .hero-sub {
@@ -116,6 +118,7 @@ html[dir="ltr"] .hero-title .line.ar-display { letter-spacing: 0.08em; }
   letter-spacing: 0.1em;
   margin-top: 6px;
   animation-delay: 0.6s !important;
+  text-shadow: 0 1px 18px rgba(7,29,37,0.45), 0 1px 2px rgba(7,29,37,0.35);
 }
 html[dir="ltr"] .hero-sub { font-family: var(--font-en-body); letter-spacing: 0.3em; text-transform: uppercase; font-size: clamp(12px, 1.4vw, 14px); }
 @keyframes riseIn { to { opacity: 1; transform: none; } }
@@ -128,7 +131,7 @@ html[dir="ltr"] .hero-sub { font-family: var(--font-en-body); letter-spacing: 0.
 /* ============ 2/4/6 · PRODUCT BANDS ============ */
 .edit-band {
   background: var(--bg);
-  padding: clamp(64px, 9vw, 120px) 0;
+  padding: clamp(52px, 6vw, 84px) 0;
 }
 .edit-flow {
   padding-inline: var(--pad);
@@ -150,7 +153,7 @@ html[dir="ltr"] .hero-sub { font-family: var(--font-en-body); letter-spacing: 0.
 /* ============ 3/5/7 · FULL-WIDTH FILM MOMENTS ============ */
 .moment {
   position: relative;
-  height: clamp(440px, 84svh, 820px);
+  height: clamp(400px, 68svh, 640px);
   overflow: clip;
   background: var(--bg-2); /* light fallback — no dark blocks */
 }
@@ -163,7 +166,8 @@ html[dir="ltr"] .hero-sub { font-family: var(--font-en-body); letter-spacing: 0.
   position: absolute; inset: 0;
   display: flex; align-items: flex-end;
   padding: clamp(32px, 6vw, 76px) var(--pad);
-  background: linear-gradient(to top, rgba(7,29,37,0.34), transparent 40%);
+  /* localized to the caption zone only */
+  background: linear-gradient(to top, rgba(7,29,37,0.5), rgba(7,29,37,0.14) 28%, transparent 44%);
   pointer-events: none;
 }
 .moment-caption p {
@@ -171,7 +175,7 @@ html[dir="ltr"] .hero-sub { font-family: var(--font-en-body); letter-spacing: 0.
   font-size: clamp(22px, 3.2vw, 40px);
   max-width: 640px;
   line-height: 1.7;
-  text-shadow: 0 1px 24px rgba(7,29,37,0.35);
+  text-shadow: 0 1px 22px rgba(7,29,37,0.5), 0 1px 2px rgba(7,29,37,0.45);
 }
 html[dir="ltr"] .moment-caption p { line-height: 1.3; }
 
@@ -214,6 +218,26 @@ html[dir="ltr"] .moment-caption p { line-height: 1.3; }
   background: transparent;
   border: 0;
   box-shadow: none;
+}
+
+/* desktop ≥1024px: one editorial row of four per band */
+@media (min-width: 1024px) {
+  .ts-salla-grid salla-products-list > div,
+  .ts-salla-grid .s-products-list-wrapper {
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: clamp(18px, 2.2vw, 34px);
+    row-gap: clamp(40px, 4vw, 64px);
+  }
+  .ts-salla-grid .s-product-card-content-title,
+  .ts-salla-grid .s-product-card-content-title a { font-size: 17px !important; }
+  .ts-salla-grid .s-product-card-price,
+  .ts-salla-grid .s-product-card-sale-price { font-size: 13px !important; }
+  .ts-salla-grid salla-add-product-button button,
+  .ts-salla-grid salla-add-product-button .s-button-element {
+    padding: 11px 24px !important;
+    font-size: 12px !important;
+    letter-spacing: 0.12em;
+  }
 }
 
 /* image window — tall editorial crop on stone; ready for the 3:4 photo system */
@@ -340,6 +364,30 @@ html[dir="ltr"] .ts-salla-grid .s-product-card-content-title a { font-family: va
 #mainnav a { color: var(--ink); }
 #mainnav .header-btn__icon { color: var(--petrol); }
 .store-header [class*="count"] { background: var(--champagne) !important; color: #fff !important; }
+.store-header .header-search { max-width: 460px; }
+
+/* mobile header: one clean navigation row */
+.header-search-mobile { display: inline-flex; align-items: center; margin-inline-end: 2px; }
+.header-search-mobile button,
+.header-search-mobile .s-search-btn {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 8px !important;
+  color: var(--petrol) !important;
+}
+.header-search-mobile i, .header-search-mobile svg, .header-search-mobile .s-search-btn i {
+  font-size: 21px;
+  color: var(--petrol) !important;
+  fill: currentColor;
+}
+@media (min-width: 1024px) { .header-search-mobile { display: none !important; } }
+@media (max-width: 1023.98px) {
+  /* the utility ribbon (and its inline search bar) collapses on mobile — a single clean row remains */
+  .store-header .top-navbar { display: none !important; }
+  #mainnav .navbar-brand img { max-height: 48px; }
+  #mainnav { padding-block: 4px; }
+}
 
 /* ---------- footer: refined minimal, light ---------- */
 .store-footer {
@@ -379,3 +427,28 @@ html[dir="ltr"] .ts-salla-grid .s-product-card-content-title a { font-family: va
 }
 .store-footer [class*="social"] a:hover { border-color: var(--champagne) !important; }
 .store-footer [class*="copyright"], .store-footer small { font-size: 12px; letter-spacing: 0.06em; }
+
+/* footer: minimal ivory/petrol refinement (nothing functional hidden) */
+.store-footer .store-footer__inner { padding-block: clamp(44px, 6vw, 76px); }
+.store-footer a[href] h3 {
+  font-family: var(--font-ar-display);
+  font-size: 24px;
+  color: var(--petrol) !important;
+  letter-spacing: 0;
+  text-transform: none;
+}
+html[dir="ltr"] .store-footer a[href] h3 { font-family: var(--font-en-display); }
+.store-footer salla-social a {
+  width: 34px; height: 34px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.store-footer salla-apps-icons img { height: 38px; width: auto; filter: grayscale(1); opacity: 0.75; transition: 0.3s; }
+.store-footer salla-apps-icons img:hover { filter: none; opacity: 1; }
+.store-footer salla-payments img { filter: grayscale(1); opacity: 0.7; }
+.store-footer salla-trust-badges { opacity: 0.85; }
+.store-footer [class*="justify-between"][class*="py-4"] {
+  border-top: 1px solid var(--line);
+  margin-top: 10px;
+  padding-top: 18px !important;
+}
+.store-footer .copyright-text { font-size: 12px; color: #8a8578; letter-spacing: 0.05em; }
