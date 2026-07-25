@@ -402,3 +402,8 @@ html[lang="ar"] .store-footer .tsx-foot-brand { letter-spacing: 0.02em; }
 .store-footer salla-apps-icons img, .store-footer salla-payments img { filter: grayscale(1); opacity: 0.72; }
 .store-footer salla-trust-badges { opacity: 0.9; }
 .store-footer .tsx-foot-base { border-top: 1px solid var(--color-border); margin-top: 18px; padding-top: 16px; font-size: 11.5px; letter-spacing: 0.05em; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+
+/* sheet polish */
+.s-add-product-toast__icon, .s-add-product-toast__icon svg, .s-add-product-toast__icon img { max-width: 40px !important; max-height: 40px !important; }
+.s-add-product-toast__title { letter-spacing: 0.04em !important; white-space: normal; }
+.s-add-product-toast__header-content { align-items: center; }
