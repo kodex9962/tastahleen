@@ -114,11 +114,15 @@
   /* ---------- 3 · toast → sheet actions ---------- */
   const toastObserver = new MutationObserver(() => {
     document.querySelectorAll('salla-add-product-toast').forEach((toast) => {
+      // the toast renders progressively — decide only once the native
+      // actions container is populated, or our checkout/no-checkout call
+      // races ahead of the buttons it must detect
+      const actions = toast.querySelector('.s-add-product-toast__actions');
+      if (!actions || !actions.children.length) return; // observer re-fires on population
       // some twilight builds skip the .s-add-product-toast wrapper and
       // render the BEM children straight on the host element
-      const box = toast.querySelector('[class*="wrapper"], .s-add-product-toast')
-        || (toast.querySelector('.s-add-product-toast__actions') ? toast : null);
-      if (!box || box.dataset.tsxToastDone) return;
+      const box = toast.querySelector('[class*="wrapper"], .s-add-product-toast') || toast;
+      if (box.dataset.tsxToastDone) return;
       box.dataset.tsxToastDone = '1';
       // display-only: Arabic-only option labels on English pages
       if (!isAr()) {
@@ -128,7 +132,7 @@
       }
       // newer builds ship their own checkout action in the sheet — only
       // backfill ours when the native actions have none
-      const hasNativeCheckout = [...box.querySelectorAll('a, button')]
+      const hasNativeCheckout = [...actions.querySelectorAll('a, button, salla-button')]
         .some((el) => /checkout|اتمام الطلب|إتمام الطلب/i.test(el.textContent));
       if (!hasNativeCheckout) {
         const a = document.createElement('a');
