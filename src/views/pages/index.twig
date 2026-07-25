@@ -1,21 +1,31 @@
 {#
-  Tastahleen — custom luxury homepage (Twilight migration of the approved static site).
-  Preserves: video hero, editorial rhythm, cinematic breaks, packaging, production,
-  story, footer. Product grid is wired to REAL Salla products via <salla-products-list>.
-  Design classes come from src/assets/styles/tastahleen-home.scss (ported 1:1).
+  TESTAHLEEN — تستاهلين · continuous editorial homepage (v2, 2026-07-25)
 
-  STATUS: first-pass migration — NOT yet preview-verified on Salla (preview needs
-  the authenticated Salla CLI). The Salla product-grid rendering and the scroll/
-  animation JS still need a preview pass to confirm/tune.
+  One luxury story, top to bottom:
+    1. cinematic hero (hero.mp4)
+    2. four live products
+    3. full-width model film (campaign.mp4)
+    4. four live products
+    5. full-width model film (garment.mp4)
+    6. four live products
+    7. full-width packaging film (packaging.mp4)
+    8. refined minimal footer (theme footer, restyled light in SCSS)
+
+  Products are DYNAMIC: three <salla-products-list source="latest" limit="12">
+  instances; pure-CSS banding shows cards 1–4 / 5–8 / 9–12 per band
+  (see .band-1/2/3 in tastahleen-home.scss). No category dependency and
+  no hard-coded product data. All commerce behavior stays native Salla.
 #}
 {% extends "layouts.master" %}
 
 {% block content %}
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Almarai:wght@300;400&family=Playfair+Display:wght@400;500&family=Inter:wght@300;400;500&display=swap">
 <div class="ts-home">
 
-  {# ============ HERO ============ #}
-  <section class="hero" id="hero">
-    <video class="hero-video" autoplay muted loop playsinline preload="metadata"
+  {# ============ 1 · HERO ============ #}
+  <section class="hero" id="hero" aria-label="تستاهلين">
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true"
            poster="{{ 'images/tastahleen/video/hero-poster.jpg' | asset }}">
       <source src="{{ 'images/tastahleen/video/hero.mp4' | asset }}" type="video/mp4" />
     </video>
@@ -26,115 +36,66 @@
         <span class="line hero-sub">أناقة تستحقينها</span>
       </h1>
       <div class="hero-ctas">
-        <a class="btn btn-solid" href="#shop">تسوقي الآن</a>
-        <a class="btn btn-line" href="#story">اكتشفي القصة</a>
+        <a class="btn btn-hero" href="#edit-1">تسوقي الآن</a>
       </div>
     </div>
   </section>
 
-  {# ============ FIRST EDIT — real Salla products ============ #}
-  <section class="products-section" id="shop">
-    <header class="section-head">
-      <p class="eyebrow">THE FIRST EDIT</p>
-      <h2 class="ar-display">الاختيار الأول</h2>
-      <p class="section-sub">قطع مختارة بعناية للمرأة السعودية، بتفاصيل راقية وقصات مريحة.</p>
-    </header>
-    <div class="product-flow ts-salla-grid">
-      {# Salla renders real products (live inventory, price, add-to-cart, checkout). #}
-      <salla-products-list source="latest" limit="8"></salla-products-list>
+  {# ============ 2 · PRODUCTS 1–4 ============ #}
+  <section class="edit-band band-1 reveal" id="edit-1" aria-label="قطع تستاهلين">
+    <div class="edit-flow ts-salla-grid">
+      <salla-products-list source="latest" limit="12"></salla-products-list>
     </div>
   </section>
 
-  {# ============ CINEMATIC BREAK ============ #}
-  <section class="cinema-break">
-    <div class="cinema-media">
-      <video autoplay muted loop playsinline preload="metadata"
-             poster="{{ 'images/tastahleen/video/campaign-poster.jpg' | asset }}">
-        <source src="{{ 'images/tastahleen/video/campaign.mp4' | asset }}" type="video/mp4" />
-      </video>
-    </div>
-    <div class="cinema-copy">
+  {# ============ 3 · FILM I ============ #}
+  <section class="moment reveal" aria-label="فيلم تستاهلين">
+    <video autoplay muted loop playsinline preload="metadata" aria-hidden="true"
+           poster="{{ 'images/tastahleen/video/campaign-poster.jpg' | asset }}">
+      <source src="{{ 'images/tastahleen/video/campaign.mp4' | asset }}" type="video/mp4" />
+    </video>
+    <div class="moment-caption">
       <p class="ar-display">تفاصيل تُرى… وفخامة تُشعر</p>
     </div>
   </section>
 
-  {# ============ PACKAGING ============ #}
-  <section class="packaging" id="packaging">
-    <div class="packaging-inner">
-      <div class="packaging-media">
-        <video autoplay muted loop playsinline preload="metadata"
-               poster="{{ 'images/tastahleen/video/packaging-poster.jpg' | asset }}">
-          <source src="{{ 'images/tastahleen/video/packaging.mp4' | asset }}" type="video/mp4" />
-        </video>
-      </div>
-      <div class="packaging-copy">
-        <p class="eyebrow eyebrow-light">THE EXPERIENCE</p>
-        <h2 class="ar-display">من القطعة إلى التغليف… كل تفصيل يليق بك.</h2>
-        <ul class="trust-list">
-          <li><span>تغليف فاخر</span></li>
-          <li><span>خدمة عملاء عبر واتساب</span></li>
-          <li><span>مقاسات واضحة</span></li>
-          <li><span>توصيل داخل السعودية</span></li>
-        </ul>
-      </div>
+  {# ============ 4 · PRODUCTS 5–8 ============ #}
+  <section class="edit-band band-2 reveal" id="edit-2" aria-label="قطع تستاهلين">
+    <div class="edit-flow ts-salla-grid">
+      <salla-products-list source="latest" limit="12"></salla-products-list>
     </div>
   </section>
 
-  {# ============ PRODUCTION ============ #}
-  <section class="production" id="production">
-    <header class="section-head">
-      <p class="eyebrow">ATELIER</p>
-      <h2 class="ar-display">من الاختيار إلى التنفيذ</h2>
-      <p class="section-sub">نختار التفاصيل بعناية، من القصة والخامة إلى التشطيب والتغليف، لنقدم تجربة تليق بالمرأة السعودية.</p>
-    </header>
-    <div class="production-grid">
-      <figure class="prod-item p-tall">
-        <img src="{{ 'images/tastahleen/process/03-sample.webp' | asset }}" alt="القصة والتصميم" loading="lazy" />
-        <figcaption>القصة والتصميم</figcaption>
-      </figure>
-      <figure class="prod-item">
-        <img src="{{ 'images/tastahleen/process/02-fabric.webp' | asset }}" alt="اختيار الخامة" loading="lazy" />
-        <figcaption>اختيار الخامة</figcaption>
-      </figure>
-      <figure class="prod-item">
-        <img src="{{ 'images/tastahleen/process/05-details.webp' | asset }}" alt="التطريز والتفاصيل" loading="lazy" />
-        <figcaption>التطريز والتفاصيل</figcaption>
-      </figure>
-      <figure class="prod-item p-wide">
-        <img src="{{ 'images/tastahleen/process/06-quality.webp' | asset }}" alt="التشطيب والجودة" loading="lazy" />
-        <figcaption>التشطيب والجودة</figcaption>
-      </figure>
+  {# ============ 5 · FILM II ============ #}
+  <section class="moment reveal" aria-label="فيلم تستاهلين">
+    <video autoplay muted loop playsinline preload="metadata" aria-hidden="true"
+           poster="{{ 'images/tastahleen/video/garment-poster.jpg' | asset }}">
+      <source src="{{ 'images/tastahleen/video/garment.mp4' | asset }}" type="video/mp4" />
+    </video>
+    <div class="moment-caption">
+      <p class="ar-display">لأنكِ تستاهلين الأجمل</p>
     </div>
   </section>
 
-  {# ============ OUR STORY ============ #}
-  <section class="story" id="story">
-    <div class="story-inner">
-      <div class="story-media">
-        <video autoplay muted loop playsinline preload="metadata"
-               poster="{{ 'images/tastahleen/video/garment-poster.jpg' | asset }}">
-          <source src="{{ 'images/tastahleen/video/garment.mp4' | asset }}" type="video/mp4" />
-        </video>
-      </div>
-      <div class="story-copy">
-        <p class="eyebrow">OUR STORY</p>
-        <h2 class="ar-display">قصتنا</h2>
-        <p class="story-text">تستاهلين وُلدت من فكرة بسيطة: أن الأناقة الراقية لا يجب أن تكون بعيدة. اخترنا بعناية شركاء تصنيع قادرين على تقديم جلابيات بتفاصيل جميلة، قصات مريحة، وجودة تليق بالمرأة السعودية.</p>
-      </div>
+  {# ============ 6 · PRODUCTS 9–12 ============ #}
+  <section class="edit-band band-3 reveal" id="edit-3" aria-label="قطع تستاهلين">
+    <div class="edit-flow ts-salla-grid">
+      <salla-products-list source="latest" limit="12"></salla-products-list>
     </div>
   </section>
 
-  {# ============ SIZE / SUPPORT ============ #}
-  <section class="support" id="support">
-    <div class="support-inner">
-      <h2 class="ar-display">اختاري مقاسك بثقة</h2>
-      <div class="support-ctas">
-        <a class="btn btn-solid" href="https://wa.me/966556834323?text={{ 'مرحبًا تستاهلين، أحتاج مساعدة في اختيار المقاس' | url_encode }}" target="_blank" rel="noreferrer">دليل المقاسات</a>
-        <a class="btn btn-line" href="https://wa.me/966556834323" target="_blank" rel="noreferrer">دعم واتساب</a>
-      </div>
+  {# ============ 7 · PACKAGING FILM ============ #}
+  <section class="moment moment-packaging reveal" aria-label="تغليف تستاهلين">
+    <video autoplay muted loop playsinline preload="metadata" aria-hidden="true"
+           poster="{{ 'images/tastahleen/video/packaging-poster.jpg' | asset }}">
+      <source src="{{ 'images/tastahleen/video/packaging.mp4' | asset }}" type="video/mp4" />
+    </video>
+    <div class="moment-caption">
+      <p class="ar-display">من القطعة إلى التغليف… كل تفصيل يليق بكِ</p>
     </div>
   </section>
 
+  {# 8 · footer renders from layouts.master (theme footer, light restyle in SCSS) #}
 </div>
 {% endblock %}
 
