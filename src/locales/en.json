@@ -1,27 +1,40 @@
 {
-  "blocks": {
-    "header": {
-      "cart": "Cart"
-    },
-    "appBanner": {
-      "download_now": "download now"
-    }
-  },
-  "pages": {
-    "cart": {
-      "cart_options": "Cart Options"
-    },
-    "order": {
-      "can_edit_or_delete_your_review_within": "You can edit or delete your review within",
-      "edit_period_ended": "The period to edit the review has ended",
-      "delete_period_ended": "The period to delete the review has ended",
-      "days_since_added": "days since it was added",
-      "option_name": "Option name",
-      "option_content": "Content"
-    }
-  },
-  "common": {
-    "bank_offer_sub_title_multiple": "Pay for your purchases via one of the following bank cards and get the specified discount",
-    "bank_offer_sub_title_single": "Pay for your purchases via :bank_name bank card and get discount"
-  }
+    "blocks":  {
+                   "header":  {
+                                  "cart":  "Shopping Bag"
+                              },
+                   "appBanner":  {
+                                     "download_now":  "download now"
+                                 }
+               },
+    "pages":  {
+                  "cart":  {
+                               "cart_options":  "Cart Options",
+                               "add_to_cart":  "Add to Bag"
+                           },
+                  "order":  {
+                                "can_edit_or_delete_your_review_within":  "You can edit or delete your review within",
+                                "edit_period_ended":  "The period to edit the review has ended",
+                                "delete_period_ended":  "The period to delete the review has ended",
+                                "days_since_added":  "days since it was added",
+                                "option_name":  "Option name",
+                                "option_content":  "Content"
+                            }
+              },
+    "common":  {
+                   "bank_offer_sub_title_multiple":  "Pay for your purchases via one of the following bank cards and get the specified discount",
+                   "bank_offer_sub_title_single":  "Pay for your purchases via :bank_name bank card and get discount"
+               },
+    "tsx":  {
+                "hero_tagline":  "Elegance you deserve",
+                "shop_now":  "Shop Now",
+                "products_band":  "Shop Testahleen pieces",
+                "caption_campaign":  "Details seen… luxury felt",
+                "caption_garment":  "Because you deserve the most beautiful",
+                "caption_packaging":  "From the piece to the packaging… every detail becomes you",
+                "announcement":  "Delivery across Saudi Arabia",
+                "footer_desc":  "Testahleen — a Saudi house of jalabiyas: refined fabrics, comfortable cuts, and details that become you.",
+                "footer_contact":  "Contact",
+                "footer_apps":  "Apps \u0026 Verification"
+            }
 }

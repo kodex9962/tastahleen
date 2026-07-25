@@ -76,6 +76,31 @@
         window.notify_when_available_in_card = "{{ theme.settings.get('notify_when_available_in_card', true) }}"
     </script>
     
+    {# TESTAHLEEN: English-first visit via the native locale URLs.
+       Runs only when no explicit preference exists; persists choices; loop-safe. #}
+    <script data-cfasync="false">
+      (function () {
+        try {
+          var pref = localStorage.getItem('tsx-lang');
+          var cur = '{{ language.code }}';
+          var p = location.pathname;
+          if (!pref && cur === 'ar' && p.indexOf('/ar') !== 0) {
+            localStorage.setItem('tsx-lang', 'en');
+            location.replace('/en' + (p === '/' ? '' : p) + location.search);
+          } else if (!pref) {
+            localStorage.setItem('tsx-lang', cur);
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    {# TESTAHLEEN: self-hosted licensed fonts (OFL) — no runtime Google Fonts #}
+    <link rel="preload" href="{{ 'fonts/PlayfairDisplay-500-latin.woff2' | asset }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ 'fonts/Inter-400-latin.woff2' | asset }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ 'fonts/NotoNaskhArabic-500-arabic.woff2' | asset }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ 'fonts/IBMPlexSansArabic-400-arabic.woff2' | asset }}" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{{ 'fonts/fonts.css' | asset }}">
+
     {% hook 'head:start' %}
     {% hook head %}
     {% block styles %}{% endblock %}

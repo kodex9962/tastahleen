@@ -1,30 +1,15 @@
 {#
-  TESTAHLEEN — تستاهلين · continuous editorial homepage (v2, 2026-07-25)
-
-  One luxury story, top to bottom:
-    1. cinematic hero (hero.mp4)
-    2. four live products
-    3. full-width model film (campaign.mp4)
-    4. four live products
-    5. full-width model film (garment.mp4)
-    6. four live products
-    7. full-width packaging film (packaging.mp4)
-    8. refined minimal footer (theme footer, restyled light in SCSS)
-
-  Products are DYNAMIC: three <salla-products-list source="latest" limit="12">
-  instances; pure-CSS banding shows cards 1–4 / 5–8 / 9–12 per band
-  (see .band-1/2/3 in tastahleen-home.scss). No category dependency and
-  no hard-coded product data. All commerce behavior stays native Salla.
+  TESTAHLEEN — continuous editorial homepage (v3, locale-pure).
+  hero film → 4 products → film → 4 products → film → 4 products → packaging film.
+  Three dynamic latest-12 lists; CSS banding 1-4/5-8/9-12 (.band-1/2/3).
+  No category dependency, no hard-coded product data. Copy via locale files only.
 #}
 {% extends "layouts.master" %}
 
 {% block content %}
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Almarai:wght@300;400&family=Playfair+Display:wght@400;500&family=Inter:wght@300;400;500&display=swap">
 <div class="ts-home">
 
-  {# ============ 1 · HERO ============ #}
-  <section class="hero" id="hero" aria-label="تستاهلين">
+  <section class="hero" id="hero" aria-label="{{ store.name }}">
     <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true"
            poster="{{ 'images/tastahleen/video/hero-poster.jpg' | asset }}">
       <source src="{{ 'images/tastahleen/video/hero.mp4' | asset }}" type="video/mp4" />
@@ -32,70 +17,57 @@
     <div class="hero-scrim" aria-hidden="true"></div>
     <div class="hero-copy">
       <h1 class="hero-title">
-        <span class="line ar-display">تستاهلين</span>
-        <span class="line hero-sub">أناقة تستحقينها</span>
+        <span class="line hero-brand">{{ language.code == 'en' ? 'TESTAHLEEN' : 'تستاهلين' }}</span>
+        <span class="line hero-sub">{{ trans('tsx.hero_tagline') }}</span>
       </h1>
       <div class="hero-ctas">
-        <a class="btn btn-hero" href="#edit-1">تسوقي الآن</a>
+        <a class="btn-hero" href="#edit-1">{{ trans('tsx.shop_now') }}</a>
       </div>
     </div>
   </section>
 
-  {# ============ 2 · PRODUCTS 1–4 ============ #}
-  <section class="edit-band band-1 reveal" id="edit-1" aria-label="قطع تستاهلين">
+  <section class="edit-band band-1 reveal" id="edit-1" aria-label="{{ trans('tsx.products_band') }}">
     <div class="edit-flow ts-salla-grid">
       <salla-products-list source="latest" limit="12"></salla-products-list>
     </div>
   </section>
 
-  {# ============ 3 · FILM I ============ #}
-  <section class="moment reveal" aria-label="فيلم تستاهلين">
+  <section class="moment reveal" aria-label="{{ store.name }}">
     <video autoplay muted loop playsinline preload="metadata" aria-hidden="true"
            poster="{{ 'images/tastahleen/video/campaign-poster.jpg' | asset }}">
       <source src="{{ 'images/tastahleen/video/campaign.mp4' | asset }}" type="video/mp4" />
     </video>
-    <div class="moment-caption">
-      <p class="ar-display">تفاصيل تُرى… وفخامة تُشعر</p>
-    </div>
+    <div class="moment-caption"><p>{{ trans('tsx.caption_campaign') }}</p></div>
   </section>
 
-  {# ============ 4 · PRODUCTS 5–8 ============ #}
-  <section class="edit-band band-2 reveal" id="edit-2" aria-label="قطع تستاهلين">
+  <section class="edit-band band-2 reveal" id="edit-2" aria-label="{{ trans('tsx.products_band') }}">
     <div class="edit-flow ts-salla-grid">
       <salla-products-list source="latest" limit="12"></salla-products-list>
     </div>
   </section>
 
-  {# ============ 5 · FILM II ============ #}
-  <section class="moment reveal" aria-label="فيلم تستاهلين">
+  <section class="moment reveal" aria-label="{{ store.name }}">
     <video autoplay muted loop playsinline preload="metadata" aria-hidden="true"
            poster="{{ 'images/tastahleen/video/garment-poster.jpg' | asset }}">
       <source src="{{ 'images/tastahleen/video/garment.mp4' | asset }}" type="video/mp4" />
     </video>
-    <div class="moment-caption">
-      <p class="ar-display">لأنكِ تستاهلين الأجمل</p>
-    </div>
+    <div class="moment-caption"><p>{{ trans('tsx.caption_garment') }}</p></div>
   </section>
 
-  {# ============ 6 · PRODUCTS 9–12 ============ #}
-  <section class="edit-band band-3 reveal" id="edit-3" aria-label="قطع تستاهلين">
+  <section class="edit-band band-3 reveal" id="edit-3" aria-label="{{ trans('tsx.products_band') }}">
     <div class="edit-flow ts-salla-grid">
       <salla-products-list source="latest" limit="12"></salla-products-list>
     </div>
   </section>
 
-  {# ============ 7 · PACKAGING FILM ============ #}
-  <section class="moment moment-packaging reveal" aria-label="تغليف تستاهلين">
+  <section class="moment moment-packaging reveal" aria-label="{{ trans('tsx.caption_packaging') }}">
     <video autoplay muted loop playsinline preload="metadata" aria-hidden="true"
            poster="{{ 'images/tastahleen/video/packaging-poster.jpg' | asset }}">
       <source src="{{ 'images/tastahleen/video/packaging.mp4' | asset }}" type="video/mp4" />
     </video>
-    <div class="moment-caption">
-      <p class="ar-display">من القطعة إلى التغليف… كل تفصيل يليق بكِ</p>
-    </div>
+    <div class="moment-caption"><p>{{ trans('tsx.caption_packaging') }}</p></div>
   </section>
 
-  {# 8 · footer renders from layouts.master (theme footer, light restyle in SCSS) #}
 </div>
 {% endblock %}
 

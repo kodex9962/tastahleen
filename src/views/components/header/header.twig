@@ -1,57 +1,36 @@
 {#
-| Variable         | Type    | Description                     |
-|------------------|---------|---------------------------------|
-| cart             | object  |                                 |
-| cart.items_count | int     |                                 |
-| cart.total       | string  | Formatted total ex: "١٠٠ ر.س"   |
+  TESTAHLEEN header (v3) — announcement ribbon + one clean navigation row.
+  Wordmark is typographic (editorial font). Search = compact modal trigger.
+  Language action is the native locale link: `العربية` on EN, `EN` on AR.
 #}
-{% set important_links = theme.settings.get('important_links') %}
+{% set is_en = language.code == 'en' %}
+{% set alt_locale_url = is_en ? (store.url ~ '/ar') : (store.url ~ '/en') %}
 <header class="store-header">
-  {# Top Nav #}
+  {# announcement / utility ribbon #}
   <div class="top-navbar">
-    <div class="container flex justify-between">
-      <div class="flex-1 flex items-center gap-2">
-          {# Footer Menu #}
-          {% if important_links %}
-            <salla-menu source="footer" topnav></salla-menu>
-          {% endif %}
-
-          {# Language & Currency Component #}
-          <div class="header-buttons">
-              {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
-                  <salla-localization-modal show-trigger></salla-localization-modal>
-              {% endif %}
-          </div>
-
-          {# Scopes | Branches #}
-          {% if store.scope %}
-              <button class="btn--rounded-gray"
-                      onclick="salla.event.dispatch('scopes::open', {'mode': 'default'})">
-                  <i class="sicon-location rtl:ml-1 ltr:mr-1"></i> {{ store.scope.name }}
-              </button>
-          {% endif %}
-
-          {# Search bar #}
-          <div class="header-search flex-1">
-            <salla-search inline oval height="36"></salla-search>
-          </div>
-      </div>
-
-      <salla-contacts is-header></salla-contacts>
+    <div class="container flex items-center justify-between w-full">
+      <a class="tsx-lang-link" data-tsx-lang="{{ is_en ? 'ar' : 'en' }}" href="{{ alt_locale_url }}">
+        {{ is_en ? 'العربية' : 'EN' }}
+      </a>
+      <span class="tsx-desktop-only">{{ trans('tsx.announcement') }}</span>
+      <span class="tsx-desktop-only">
+        {% if store.contacts.email %}{{ store.contacts.email }}{% endif %}
+      </span>
     </div>
   </div>
 
-  {# Main Nav #}
-  <div id="mainnav" class="main-nav-container shadow-default bg-white flex items-center">
+  {# main row #}
+  <div id="mainnav" class="main-nav-container flex items-center">
       <div class="inner bg-inherit w-full">
           <div class="container">
-              <div class="flex items-stretch justify-between relative">
-                  <div class="flex items-center">
-                      <a class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4" href="#mobile-menu" aria-label="Open-menu">
-                        <i class="sicon-menu text-primary text-2xl"></i>
+              <div class="flex items-center justify-between relative">
+                  <div class="flex items-center min-w-0">
+                      <a class="lg:hidden mburger mburger--collapse leading-none rtl:ml-2 ltr:mr-2" href="#mobile-menu" aria-label="Open-menu">
+                        <i class="sicon-menu text-2xl"></i>
                       </a>
                       <a class="navbar-brand" href="{{ store.url }}">
                           <img fetchpriority="high" width="100%" height="100%" loading="eager" src="{{ store.logo|cdn(175) }}" alt="{{ store.name }} logo">
+                          <span class="tsx-wordmark" aria-hidden="true">{{ is_en ? 'TESTAHLEEN' : 'تستاهلين' }}</span>
                           {% if is_page('index') %}
                             <h1 class="sr-only">{{ store.name }}</h1>
                           {% else %}
@@ -60,11 +39,10 @@
                       </a>
                       <custom-main-menu></custom-main-menu>
                   </div>
-                  <div class="flex items-center justify-end my-2.5">
-                      {# mobile-only search trigger (placeholder mode = button that opens Salla's native search modal) #}
-                      <salla-search class="header-search-mobile lg:hidden" placeholder height="38"></salla-search>
+                  <div class="flex items-center justify-end">
+                      <salla-search class="header-search-mobile" placeholder height="38"></salla-search>
                       <salla-user-menu avatar-only show-header show-trigger></salla-user-menu>
-                      <salla-cart-summary class="ml-4 rtl:ml-[unset] rtl:mr-4">
+                      <salla-cart-summary class="rtl:mr-1 ltr:ml-1">
                         <i slot="icon" class="header-btn__icon icon sicon-shopping-bag"></i>
                       </salla-cart-summary>
                   </div>
@@ -73,3 +51,10 @@
       </div>
   </div>
 </header>
+<script>
+  /* persist the customer's explicit language choice (native locale links do the switch) */
+  document.addEventListener('click', function (e) {
+    var l = e.target.closest('[data-tsx-lang]');
+    if (l) { try { localStorage.setItem('tsx-lang', l.getAttribute('data-tsx-lang')); } catch (err) {} }
+  });
+</script>

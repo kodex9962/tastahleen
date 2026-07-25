@@ -206,7 +206,11 @@
                     </div>
                 {% endif %}
 
+                {% if product.category.name %}
+                  <div class="tsx-pdp-eyebrow">{{ product.category.name }}</div>
+                {% endif %}
                 <h1 class="text-xl md:text-2xl leading-10 font-bold mb-6 text-gray-800">{{ product.name }}</h1>
+                <div class="tsx-brand-line">{{ language.code == 'en' ? 'TESTAHLEEN' : 'تستاهلين' }}</div>
 
                 {% if product.subtitle %}
                     <h2 class="product-entry__sub-title text-sm text-gray-500 leading-6 mb-2.5">
