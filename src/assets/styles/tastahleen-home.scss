@@ -295,8 +295,15 @@ salla-add-product-button.sticky-product-bar__btn button:hover { opacity: 0.92; }
 /* similar products keep the same grid card */
 salla-products-slider .s-products-slider-card { background: var(--color-white); }
 
-/* ---------- 9 · ADDED-TO-BAG SHEET (restyled toast) ---------- */
+/* ---------- 9 · ADDED-TO-BAG SHEET (restyled toast) ----------
+   Some twilight builds render the BEM children straight on the
+   <salla-add-product-toast> host (no .s-add-product-toast wrapper),
+   so the sheet container styles target both. :empty keeps the bare
+   host invisible before an add and after auto-dismiss. */
+salla-add-product-toast:empty { display: none !important; }
+salla-add-product-toast:not(:empty),
 .s-add-product-toast {
+  display: block !important;
   position: fixed !important; inset-inline: 0 !important; bottom: 0 !important; top: auto !important;
   width: 100% !important; max-width: 560px !important; margin-inline: auto !important;
   background: var(--color-white) !important;
@@ -304,6 +311,10 @@ salla-products-slider .s-products-slider-card { background: var(--color-white); 
   box-shadow: 0 -12px 40px rgba(7, 29, 37, 0.16) !important;
   padding: 16px 18px calc(16px + env(safe-area-inset-bottom)) !important;
   z-index: 999;
+}
+salla-add-product-toast:not(:empty) .s-add-product-toast {
+  position: static !important; box-shadow: none !important; border: 0 !important; padding: 0 !important;
+  max-width: none !important;
 }
 .s-add-product-toast__progress { display: none !important; }
 .s-add-product-toast__header { background: transparent !important; }

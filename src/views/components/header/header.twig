@@ -57,4 +57,20 @@
     var l = e.target.closest('[data-tsx-lang]');
     if (l) { try { localStorage.setItem('tsx-lang', l.getAttribute('data-tsx-lang')); } catch (err) {} }
   });
+  /* locale-aware alternate URL: store.url may already carry a locale segment
+     (testahleen.com/ar, salla.design/ar/testahleen) — swap it, don't append */
+  (function () {
+    var a = document.querySelector('[data-tsx-lang]');
+    if (!a) return;
+    try {
+      var target = a.getAttribute('data-tsx-lang');
+      var u = new URL('{{ store.url }}');
+      var segs = u.pathname.split('/').filter(Boolean);
+      var j = -1;
+      for (var k = 0; k < segs.length; k++) if (segs[k] === 'ar' || segs[k] === 'en') { j = k; break; }
+      if (j >= 0) { segs[j] = target; } else { segs.push(target); }
+      var q = /(^|[?&])preview=true(&|$)/.test(location.search) ? '?preview=true' : '';
+      a.setAttribute('href', u.origin + '/' + segs.join('/') + q);
+    } catch (err) {}
+  })();
 </script>

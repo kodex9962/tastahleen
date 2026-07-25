@@ -77,18 +77,32 @@
     </script>
     
     {# TESTAHLEEN: English-first visit via the native locale URLs.
-       Runs only when no explicit preference exists; persists choices; loop-safe. #}
+       Runs only when no explicit preference exists; persists choices; loop-safe.
+       Locale-aware: store.url may already carry a locale segment (testahleen.com/ar,
+       salla.design/ar/testahleen) — swap that segment instead of appending. A URL whose
+       path already names a locale is an explicit choice and is never redirected. #}
     <script data-cfasync="false">
       (function () {
         try {
           var pref = localStorage.getItem('tsx-lang');
           var cur = '{{ language.code }}';
-          var base = new URL('{{ store.url }}').pathname.replace(/\/$/, '');
-          var p = location.pathname;
-          var inLocale = p.indexOf(base + '/ar') === 0 || p.indexOf(base + '/en') === 0;
-          if (!pref && cur === 'ar' && !inLocale) {
+          var u = new URL('{{ store.url }}');
+          if (location.origin !== u.origin) { if (!pref) localStorage.setItem('tsx-lang', cur); return; }
+          var isLoc = function (s) { return s === 'ar' || s === 'en'; };
+          var here = location.pathname.split('/').filter(Boolean);
+          var explicit = false;
+          for (var i = 0; i < here.length; i++) if (isLoc(here[i])) { explicit = true; break; }
+          if (!pref && cur === 'ar' && !explicit) {
+            var base = u.pathname.split('/').filter(Boolean);
+            var j = -1;
+            for (var k = 0; k < base.length; k++) if (isLoc(base[k])) { j = k; break; }
+            if (j >= 0) { base[j] = 'en'; } else { base.push('en'); }
+            var basePath = u.pathname.replace(/\/$/, '');
+            var rel = basePath && location.pathname.indexOf(basePath) === 0
+              ? location.pathname.slice(basePath.length)
+              : (location.pathname === '/' ? '' : location.pathname);
             localStorage.setItem('tsx-lang', 'en');
-            location.replace('{{ store.url }}'.replace(/\/$/, '') + '/en' + p.slice(base.length) + location.search);
+            location.replace(u.origin + '/' + base.join('/') + rel + location.search);
           } else if (!pref) {
             localStorage.setItem('tsx-lang', cur);
           }

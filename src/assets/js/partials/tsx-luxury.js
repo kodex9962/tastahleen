@@ -114,7 +114,10 @@
   /* ---------- 3 · toast → sheet actions ---------- */
   const toastObserver = new MutationObserver(() => {
     document.querySelectorAll('salla-add-product-toast').forEach((toast) => {
-      const box = toast.querySelector('[class*="wrapper"], .s-add-product-toast');
+      // some twilight builds skip the .s-add-product-toast wrapper and
+      // render the BEM children straight on the host element
+      const box = toast.querySelector('[class*="wrapper"], .s-add-product-toast')
+        || (toast.querySelector('.s-add-product-toast__actions') ? toast : null);
       if (!box || box.querySelector('.tsx-toast-checkout')) return;
       const a = document.createElement('a');
       a.href = (salla.config.get('store.url') || '').replace(/\/$/, '') + '/cart';
