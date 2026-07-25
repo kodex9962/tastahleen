@@ -366,20 +366,25 @@ html[dir="ltr"] .ts-salla-grid .s-product-card-content-title a { font-family: va
 .store-header [class*="count"] { background: var(--champagne) !important; color: #fff !important; }
 .store-header .header-search { max-width: 460px; }
 
-/* mobile header: one clean navigation row */
+/* mobile header: one clean navigation row — compact icon trigger for the search modal */
 .header-search-mobile { display: inline-flex; align-items: center; margin-inline-end: 2px; }
-.header-search-mobile button,
-.header-search-mobile .s-search-btn {
+.header-search-mobile .s-search-placeholder-wrapper {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px;
+}
+.header-search-mobile .s-search-input-wrapper { position: static; }
+.header-search-mobile .s-search-icon-wrap { position: static; display: inline-flex; pointer-events: none; }
+.header-search-mobile .s-search-icon svg { width: 21px; height: 21px; color: var(--petrol); fill: var(--petrol); }
+.header-search-mobile .s-search-placeholder-trigger {
+  position: absolute; inset: 0;
+  width: 100%; height: 100% !important;
+  font-size: 0 !important;
   background: transparent !important;
   border: 0 !important;
+  border-radius: 0 !important;
   box-shadow: none !important;
-  padding: 8px !important;
-  color: var(--petrol) !important;
-}
-.header-search-mobile i, .header-search-mobile svg, .header-search-mobile .s-search-btn i {
-  font-size: 21px;
-  color: var(--petrol) !important;
-  fill: currentColor;
+  padding: 0 !important;
 }
 @media (min-width: 1024px) { .header-search-mobile { display: none !important; } }
 @media (max-width: 1023.98px) {
