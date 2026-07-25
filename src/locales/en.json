@@ -9,8 +9,10 @@
                },
     "pages":  {
                   "cart":  {
-                               "cart_options":  "Cart Options",
-                               "add_to_cart":  "Add to Bag"
+                               "cart_options":  "Bag Options",
+                               "add_to_cart":  "Add to Bag",
+                               "added_to_cart":  "Added to Bag",
+                               "view_cart":  "View Bag"
                            },
                   "order":  {
                                 "can_edit_or_delete_your_review_within":  "You can edit or delete your review within",

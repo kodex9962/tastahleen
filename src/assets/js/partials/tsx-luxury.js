@@ -118,16 +118,32 @@
       // render the BEM children straight on the host element
       const box = toast.querySelector('[class*="wrapper"], .s-add-product-toast')
         || (toast.querySelector('.s-add-product-toast__actions') ? toast : null);
-      if (!box || box.querySelector('.tsx-toast-checkout')) return;
-      const a = document.createElement('a');
-      a.href = (salla.config.get('store.url') || '').replace(/\/$/, '') + '/cart';
-      a.className = 'tsx-toast-checkout';
-      a.textContent = t('Checkout', 'إتمام الطلب');
-      const c = document.createElement('a');
-      c.href = '#'; c.className = 'tsx-toast-continue';
-      c.textContent = t('Continue shopping', 'مواصلة التسوق');
-      c.addEventListener('click', (e) => { e.preventDefault(); toast.querySelector('[class*="close"]')?.click(); box.remove(); });
-      box.appendChild(a); box.appendChild(c);
+      if (!box || box.dataset.tsxToastDone) return;
+      box.dataset.tsxToastDone = '1';
+      // display-only: Arabic-only option labels on English pages
+      if (!isAr()) {
+        box.querySelectorAll('.s-add-product-toast__options').forEach((o) => {
+          o.textContent = o.textContent.replace(/المقاسات|المقاس/g, 'Size');
+        });
+      }
+      // newer builds ship their own checkout action in the sheet — only
+      // backfill ours when the native actions have none
+      const hasNativeCheckout = [...box.querySelectorAll('a, button')]
+        .some((el) => /checkout|اتمام الطلب|إتمام الطلب/i.test(el.textContent));
+      if (!hasNativeCheckout) {
+        const a = document.createElement('a');
+        a.href = (salla.config.get('store.url') || '').replace(/\/$/, '') + '/cart';
+        a.className = 'tsx-toast-checkout';
+        a.textContent = t('Checkout', 'إتمام الطلب');
+        box.appendChild(a);
+      }
+      if (!box.querySelector('.tsx-toast-continue')) {
+        const c = document.createElement('a');
+        c.href = '#'; c.className = 'tsx-toast-continue';
+        c.textContent = t('Continue shopping', 'مواصلة التسوق');
+        c.addEventListener('click', (e) => { e.preventDefault(); toast.querySelector('[class*="close"]')?.click(); box.remove(); });
+        box.appendChild(c);
+      }
     });
   });
   document.addEventListener('DOMContentLoaded', () => {

@@ -10,7 +10,9 @@
     "pages":  {
                   "cart":  {
                                "cart_options":  "خيارات الحقيبة",
-                               "add_to_cart":  "أضيفي إلى الحقيبة"
+                               "add_to_cart":  "أضيفي إلى الحقيبة",
+                               "added_to_cart":  "أُضيفت إلى الحقيبة",
+                               "view_cart":  "عرض الحقيبة"
                            },
                   "order":  {
                                 "can_edit_or_delete_your_review_within":  "يمكنك تعديل أو حذف تقييمك خلال",
