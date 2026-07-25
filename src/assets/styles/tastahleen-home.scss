@@ -296,18 +296,36 @@ salla-add-product-button.sticky-product-bar__btn button:hover { opacity: 0.92; }
 salla-products-slider .s-products-slider-card { background: var(--color-white); }
 
 /* ---------- 9 · ADDED-TO-BAG SHEET (restyled toast) ---------- */
-salla-add-product-toast .s-add-product-toast,
-salla-add-product-toast [class*="wrapper"] {
+.s-add-product-toast {
   position: fixed !important; inset-inline: 0 !important; bottom: 0 !important; top: auto !important;
   width: 100% !important; max-width: 560px !important; margin-inline: auto !important;
   background: var(--color-white) !important;
   border: 0 !important; border-top: 1px solid var(--color-border) !important; border-radius: 0 !important;
-  box-shadow: 0 -12px 40px rgba(7, 29, 37, 0.14) !important;
-  padding: 18px 18px calc(18px + env(safe-area-inset-bottom)) !important;
+  box-shadow: 0 -12px 40px rgba(7, 29, 37, 0.16) !important;
+  padding: 16px 18px calc(16px + env(safe-area-inset-bottom)) !important;
   z-index: 999;
 }
-salla-add-product-toast [class*="title"] { font-family: var(--f-ui); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text); }
-salla-add-product-toast img { width: 64px !important; height: 80px !important; object-fit: cover; }
+.s-add-product-toast__progress { display: none !important; }
+.s-add-product-toast__header { background: transparent !important; }
+.s-add-product-toast__icon { color: var(--color-petrol) !important; background: transparent !important; }
+.s-add-product-toast__title { font-family: var(--f-ui) !important; font-size: 11px !important; font-weight: 500 !important; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text) !important; }
+.s-add-product-toast__image, .s-add-product-toast__image img { width: 64px !important; height: 80px !important; object-fit: cover; border-radius: 0 !important; }
+.s-add-product-toast__name { font-family: var(--f-display) !important; font-size: 15px !important; color: var(--color-text) !important; }
+.s-add-product-toast__options { font-family: var(--f-ui); font-size: 11.5px; color: var(--color-muted); }
+.s-add-product-toast__price { font-family: var(--f-ui) !important; font-weight: 500; }
+.s-add-product-toast__actions { display: flex !important; flex-direction: column-reverse !important; gap: 10px !important; margin-top: 12px; }
+.s-add-product-toast__actions > * { width: 100% !important; }
+.s-add-product-toast__actions button, .s-add-product-toast__actions .s-button-element, .s-add-product-toast__actions a {
+  width: 100% !important; height: 50px !important; border-radius: 0 !important;
+  font-family: var(--f-ui) !important; font-size: 11px !important; font-weight: 500 !important;
+  letter-spacing: 0.14em; text-transform: uppercase;
+}
+.s-add-product-toast__actions > *:first-child button, .s-add-product-toast__actions > *:first-child .s-button-element {
+  background: var(--color-petrol) !important; color: var(--color-ivory) !important; border: 0 !important;
+}
+.s-add-product-toast__actions > *:last-child button, .s-add-product-toast__actions > *:last-child .s-button-element {
+  background: transparent !important; color: var(--color-text) !important; border: 1px solid var(--color-border) !important; height: 44px !important;
+}
 .tsx-toast-checkout {
   display: block; width: 100%; margin-top: 14px;
   background: var(--color-petrol); color: var(--color-ivory) !important;
