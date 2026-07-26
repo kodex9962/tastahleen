@@ -10,10 +10,12 @@ class Home extends BasePage {
     }
 
     /**
-     * TESTAHLEEN editorial homepage behavior (v2):
-     * - quiet reveal-on-scroll for sections
-     * - respect prefers-reduced-motion (films hold their poster frame)
-     * - pause films while offscreen (performance / battery)
+     * TESTAHLEEN editorial homepage behavior (v4):
+     * - films autoplay reliably on the first fresh visit in either locale:
+     *   properties are (re)asserted and playback is re-kicked after hydration,
+     *   bfcache restores (pageshow), tab re-activation, and locale reloads
+     * - prefers-reduced-motion: films hold their poster and expose manual controls
+     * - offscreen films pause (performance / battery)
      * All guarded: absence of any element is a no-op.
      */
     initEditorial() {
@@ -21,17 +23,53 @@ class Home extends BasePage {
         if (!root) return;
 
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const videos = root.querySelectorAll('video');
+        const videos = [...root.querySelectorAll('video')];
+
+        const arm = (v) => {
+            try {
+                v.muted = true;
+                v.defaultMuted = true;
+                v.setAttribute('muted', '');
+                v.setAttribute('playsinline', '');
+                v.loop = true;
+                if (!reduceMotion) v.setAttribute('autoplay', '');
+            } catch (e) {}
+        };
+        const kick = (v) => {
+            if (reduceMotion || !v.paused) return;
+            const p = v.play();
+            if (p && p.catch) p.catch(() => {
+                // data not ready yet or transient block — retry once media can play
+                v.addEventListener('canplay', () => { v.play().catch(() => {}); }, { once: true });
+                try { v.load(); } catch (e) {}
+            });
+        };
+        const kickInView = () => videos.forEach(v => {
+            const r = v.getBoundingClientRect();
+            if (r.bottom > 0 && r.top < innerHeight + 120) kick(v);
+        });
+
+        videos.forEach(arm);
 
         if (reduceMotion) {
-            videos.forEach(v => { try { v.removeAttribute('autoplay'); v.pause(); } catch (e) {} });
-        } else if ('IntersectionObserver' in window && videos.length) {
-            const vo = new IntersectionObserver(entries => {
-                entries.forEach(({ target: v, isIntersecting }) => {
-                    try { isIntersecting ? v.play().catch(() => {}) : v.pause(); } catch (e) {}
-                });
-            }, { rootMargin: '120px 0px' });
-            videos.forEach(v => vo.observe(v));
+            videos.forEach(v => { try { v.removeAttribute('autoplay'); v.pause(); v.setAttribute('controls', ''); } catch (e) {} });
+        } else {
+            kickInView();
+            window.addEventListener('load', kickInView, { once: true });
+            window.addEventListener('pageshow', () => { videos.forEach(arm); kickInView(); });
+            document.addEventListener('visibilitychange', () => { if (!document.hidden) kickInView(); });
+            try { window.salla && salla.onReady && salla.onReady(() => kickInView()); } catch (e) {}
+            setTimeout(kickInView, 1200);
+            setTimeout(kickInView, 3500);
+
+            if ('IntersectionObserver' in window && videos.length) {
+                const vo = new IntersectionObserver(entries => {
+                    entries.forEach(({ target: v, isIntersecting }) => {
+                        try { isIntersecting ? kick(v) : v.pause(); } catch (e) {}
+                    });
+                }, { rootMargin: '120px 0px' });
+                videos.forEach(v => vo.observe(v));
+            }
         }
 
         const revealables = root.querySelectorAll('.reveal');

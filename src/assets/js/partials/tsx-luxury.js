@@ -12,6 +12,7 @@
 (function () {
   const isAr = () => document.documentElement.lang === 'ar';
   const t = (en, ar) => (isAr() ? ar : en);
+  const isCartPage = () => /\/cart(\/|$|\?)/.test(location.pathname);
 
   /* ---------- 1 · quick add ---------- */
   function openDrawer(html) {
@@ -67,6 +68,7 @@
 
   /* ---------- 2 · PDP select → size buttons ---------- */
   function transformSelects() {
+    if (isCartPage()) return; // cart lines show sizes read-only (section 7)
     document.querySelectorAll('salla-product-options select').forEach((sel) => {
       if (sel.dataset.tsxDone) return;
       const opts = [...sel.options].filter(o => o.value !== '' && o.value != null);
@@ -172,5 +174,100 @@
       pill.textContent = `${i + 1} | ${slides.length}`;
     };
     new MutationObserver(update).observe(slider, { attributes: true, subtree: true, attributeFilter: ['class'] });
+  });
+
+  /* ---------- 5 · deterministic homepage order ----------
+     Bands declare their exact product sequence via data-tsx-ids; once a
+     band's cards hydrate we re-append them in that order, so the page
+     never depends on the products API's own sort. */
+  function enforceOrder() {
+    document.querySelectorAll('[data-tsx-ids]').forEach((wrap) => {
+      if (wrap.dataset.tsxOrdered) return;
+      let ids;
+      try { ids = JSON.parse(wrap.dataset.tsxIds); } catch (e) { return; }
+      const grid = wrap.querySelector('.s-products-list-wrapper') || wrap.querySelector('salla-products-list > div');
+      if (!grid) return;
+      const cards = [...grid.querySelectorAll('custom-salla-product-card')];
+      if (cards.length < ids.length) return; // still hydrating
+      const byId = new Map(cards.map(c => [Number(c.id), c]));
+      if (!ids.every(id => byId.has(id))) return;
+      const current = cards.map(c => Number(c.id));
+      if (!ids.every((id, i) => current[i] === id)) ids.forEach(id => grid.appendChild(byId.get(id)));
+      wrap.dataset.tsxOrdered = '1';
+    });
+  }
+  const orderObserver = new MutationObserver(() => enforceOrder());
+  document.addEventListener('DOMContentLoaded', () => {
+    enforceOrder();
+    document.querySelectorAll('[data-tsx-ids]').forEach(w => orderObserver.observe(w, { childList: true, subtree: true }));
+  });
+
+  /* ---------- 6 · size-first purchasing: PDP lock ----------
+     Add to Bag stays disabled until the required option has a value.
+     Works with the size-button grid (which syncs the native select). */
+  function lockAtb() {
+    if (isCartPage()) return;
+    const host = document.querySelector('.product-form salla-add-product-button, form salla-add-product-button');
+    if (!host) return;
+    const sel = document.querySelector('.product-form salla-product-options select, form salla-product-options select');
+    const apply = () => {
+      const locked = !!sel && !sel.value;
+      host.classList.toggle('tsx-atb-locked', locked);
+      host.querySelectorAll('button').forEach((b) => {
+        if (locked) { b.setAttribute('disabled', ''); b.setAttribute('aria-disabled', 'true'); }
+        else { b.removeAttribute('disabled'); b.removeAttribute('aria-disabled'); }
+      });
+    };
+    apply();
+    if (sel && !sel.dataset.tsxLockBound) {
+      sel.dataset.tsxLockBound = '1';
+      sel.addEventListener('change', apply);
+    }
+    if (!host.dataset.tsxLockObserved) {
+      host.dataset.tsxLockObserved = '1';
+      new MutationObserver(apply).observe(host, { childList: true, subtree: true });
+    }
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    lockAtb();
+    const optHost = document.querySelector('salla-product-options');
+    if (optHost) new MutationObserver(() => lockAtb()).observe(optHost, { childList: true, subtree: true });
+    setTimeout(lockAtb, 1500);
+  });
+
+  /* ---------- 7 · cart lines: read-only per-line size ---------- */
+  function cartSizes() {
+    if (!isCartPage()) return;
+    document.body.classList.add('tsx-cart-page');
+    document.querySelectorAll('.cart-item').forEach((item) => {
+      const sel = item.querySelector('salla-product-options select');
+      let label = null;
+      if (sel && sel.selectedOptions && sel.selectedOptions.length && sel.value) {
+        label = (sel.selectedOptions[0].textContent || '').trim() || null;
+      }
+      if (!label) {
+        // fallback: whatever readable option text salla printed on the line
+        const printed = item.querySelector('.s-product-options-option-value, [class*="option-value"]');
+        if (printed) label = printed.textContent.trim() || null;
+      }
+      if (!label) return;
+      let line = item.querySelector('.tsx-line-size');
+      if (!line) {
+        line = document.createElement('p');
+        line.className = 'tsx-line-size';
+        const nameEl = item.querySelector('.text-gray-900, h2, h3, a[href*="/p"]');
+        (nameEl && nameEl.parentElement ? nameEl.parentElement : item).appendChild(line);
+      }
+      line.textContent = '';
+      line.append(t('Size: ', 'المقاس: '));
+      const b = document.createElement('b');
+      b.textContent = label;
+      line.append(b);
+    });
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!isCartPage()) return;
+    cartSizes();
+    new MutationObserver(() => cartSizes()).observe(document.body, { childList: true, subtree: true });
   });
 })();

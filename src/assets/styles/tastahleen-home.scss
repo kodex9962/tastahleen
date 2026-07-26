@@ -1,31 +1,35 @@
 /* ============================================================
-   TESTAHLEEN — luxury system v3 (2026-07-25)
-   One shared token/typography layer + editorial homepage +
-   RL-grade card / PLP / PDP / bag / footer. EN-first, AR/RTL parity.
+   TESTAHLEEN — luxury system v4 (2026-07-26)
+   Approved palette: ivory #F5F0EA ground, petrol #071D25 identity,
+   muted gold #B8A06A accent, #D9D3C8 hairlines. Petrol footer.
+   Emblem/lockup branding, Newsreader card titles. EN-first, AR/RTL parity.
    ============================================================ */
 
 /* ---------- 1 · TOKENS ---------- */
 :root {
   --color-petrol: #071D25;
-  --color-ivory: #FAF8F3;
-  --color-warm-ivory: #F8F5EF;
+  --color-ivory: #F5F0EA;
+  --color-warm-ivory: #F5F0EA;
+  --color-gold: #B8A06A;
   --color-white: #FFFFFF;
   --color-text: #111111;
   --color-muted: #66645F;
-  --color-border: #D6D1C8;
+  --color-border: #D9D3C8;
   --color-error: #B4232D;
 
   --font-en-display: 'Playfair Display', Georgia, serif;
+  --font-en-card: 'Newsreader', Georgia, serif;
   --font-en-ui: 'Inter', -apple-system, 'Segoe UI', sans-serif;
   --font-ar-display: 'Noto Naskh Arabic', 'Amiri', serif;
   --font-ar-ui: 'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
 
   --f-display: var(--font-ar-display);
+  --f-card: var(--font-ar-ui);
   --f-ui: var(--font-ar-ui);
   --ease: cubic-bezier(0.25, 0.6, 0.3, 1);
   --pad: clamp(16px, 4vw, 64px);
 }
-html[lang="en"] { --f-display: var(--font-en-display); --f-ui: var(--font-en-ui); }
+html[lang="en"] { --f-display: var(--font-en-display); --f-card: var(--font-en-card); --f-ui: var(--font-en-ui); }
 
 /* ---------- 2 · BASE / OVERFLOW-SAFE GEOMETRY ---------- */
 html { scroll-behavior: smooth; }
@@ -68,15 +72,9 @@ h1, h2, h3 { font-family: var(--f-display); color: var(--color-text); }
 }
 #mainnav { min-height: 64px; }
 #mainnav > .inner > .container { max-width: 1440px; }
-.tsx-wordmark {
-  font-family: var(--f-display);
-  font-size: 18px; font-weight: 500;
-  letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--color-text); white-space: nowrap;
-  padding-block: 8px;
-}
-html[lang="ar"] .tsx-wordmark { letter-spacing: 0.04em; font-size: 21px; }
-#mainnav .navbar-brand img { display: none; } /* typographic wordmark replaces the square logo */
+/* approved split-T emblem — the only header brand mark */
+#mainnav .navbar-brand { display: inline-flex; align-items: center; padding-block: 8px; }
+#mainnav .navbar-brand img.tsx-emblem { display: block; width: 32px; height: 32px; }
 #mainnav a, #mainnav .header-btn__icon, #mainnav i { color: var(--color-text); }
 #mainnav i { font-size: 20px; }
 #mainnav .mburger, .header-search-mobile, #mainnav salla-user-menu, #mainnav salla-cart-summary {
@@ -86,11 +84,22 @@ html[lang="ar"] .tsx-wordmark { letter-spacing: 0.04em; font-size: 21px; }
 .tsx-lang-link { font-family: var(--f-ui); cursor: pointer; }
 @media (min-width: 1024px) {
   #mainnav { min-height: 82px; }
-  .tsx-wordmark { font-size: 22px; }
   #mainnav .nav a, custom-main-menu a { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
 }
 @media (max-width: 1023.98px) {
   .store-header .top-navbar .tsx-desktop-only { display: none !important; }
+  /* centred 28px emblem on mobile */
+  #mainnav > .inner > .container > .flex { position: relative; }
+  #mainnav .navbar-brand {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0; z-index: 1;
+  }
+  #mainnav .navbar-brand img.tsx-emblem { width: 28px; height: 28px; }
+  /* bag icon + count badge only — no monetary total in the mobile header */
+  #mainnav salla-cart-summary .s-cart-summary-total,
+  #mainnav salla-cart-summary [class*="total"],
+  #mainnav salla-cart-summary [class*="price"] { display: none !important; }
 }
 /* compact mobile search trigger (salla-search placeholder mode) */
 .header-search-mobile { display: inline-flex; align-items: center; }
@@ -107,13 +116,12 @@ html[lang="ar"] .tsx-wordmark { letter-spacing: 0.04em; font-size: 21px; }
 .hero-scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(7,29,37,0.55), rgba(7,29,37,0.2) 30%, transparent 55%); }
 .hero-copy { position: absolute; inset-inline: var(--pad); bottom: clamp(40px, 8vh, 88px); color: #fff; max-width: 640px; }
 .hero-title .line { display: block; }
-.hero-title .line.hero-brand {
-  color: #fff; font-family: var(--f-display); font-weight: 500;
-  font-size: clamp(38px, 6.4vw, 76px); line-height: 1.1;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  text-shadow: 0 2px 26px rgba(7,29,37,0.5), 0 1px 2px rgba(7,29,37,0.4);
+/* approved primary lockup replaces any typed brand name */
+.hero-lockup {
+  display: block; width: 170px; max-width: 72vw; height: auto;
+  filter: drop-shadow(0 2px 18px rgba(7,29,37,0.45));
 }
-html[lang="ar"] .hero-title .line.hero-brand { letter-spacing: 0.02em; line-height: 1.4; }
+@media (min-width: 1024px) { .hero-lockup { width: 240px; } }
 .hero-sub { font-family: var(--f-ui); font-weight: 400; font-size: clamp(13px, 1.8vw, 17px); letter-spacing: 0.24em; text-transform: uppercase; margin-top: 10px; text-shadow: 0 1px 18px rgba(7,29,37,0.45); }
 html[lang="ar"] .hero-sub { letter-spacing: 0.08em; }
 .hero-ctas { margin-top: 26px; }
@@ -135,15 +143,24 @@ html[lang="ar"] .hero-sub { letter-spacing: 0.08em; }
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.26s var(--ease), transform 0.26s var(--ease); }
 .reveal.in { opacity: 1; transform: none; }
 
-/* homepage band visibility: three latest-12 lists → 1-4 / 5-8 / 9-12 */
-.band-1 .s-products-list-wrapper > *:nth-child(n+5),
-.band-1 salla-products-list > div > *:nth-child(n+5) { display: none !important; }
-.band-2 .s-products-list-wrapper > *:nth-child(-n+4),
-.band-2 salla-products-list > div > *:nth-child(-n+4) { display: none !important; }
-.band-2 .s-products-list-wrapper > *:nth-child(n+9),
-.band-2 salla-products-list > div > *:nth-child(n+9) { display: none !important; }
-.band-3 .s-products-list-wrapper > *:nth-child(-n+8),
-.band-3 salla-products-list > div > *:nth-child(-n+8) { display: none !important; }
+/* THE COLLECTION heading — locale copy from tsx.collection, gold accent */
+.collection-head { background: var(--color-ivory); padding: clamp(30px, 5vw, 64px) var(--pad) 0; text-align: center; }
+.collection-eyebrow {
+  display: inline-block;
+  color: var(--color-gold);
+  font-family: var(--f-ui); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.34em; text-transform: uppercase;
+  padding-bottom: 12px; margin: 0;
+  border-bottom: 1px solid var(--color-border);
+}
+html[lang="ar"] .collection-eyebrow { letter-spacing: 0.12em; font-size: 14px; }
+
+/* pair bands (positions 1–2 and 11–12): two editorial columns at every width */
+.band-pair .ts-salla-grid salla-products-list > div,
+.band-pair .s-products-list-wrapper {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  max-width: 1180px; margin-inline: auto;
+}
 
 /* ---------- 5 · PRODUCT GRID (bands + listing + search) ---------- */
 .ts-salla-grid salla-products-list { display: block; }
@@ -192,12 +209,13 @@ custom-salla-product-card:hover .tsx-card-media img { transform: scale(1.02); }
 .tsx-card-info { padding: 10px 12px 18px; text-align: start; }
 .tsx-card-titlerow { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .tsx-card-name {
-  font-family: var(--f-display); font-weight: 500; margin: 0;
-  font-size: 15px; line-height: 1.18;
+  font-family: var(--f-card); font-weight: 400; margin: 0;
+  font-size: 13px; line-height: 1.25;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-html[lang="ar"] .tsx-card-name { font-size: 17px; line-height: 1.35; }
+html[lang="ar"] .tsx-card-name { font-family: var(--font-ar-ui); font-weight: 400; font-size: 13.5px; line-height: 1.45; }
 .tsx-card-name a { color: var(--color-text); }
+.tsx-card-name b, .tsx-card-name strong { font-weight: 400; }
 .tsx-card-heart { flex: none; width: 24px; height: 24px; padding: 0; background: transparent; border: 0; color: var(--color-text); cursor: pointer; }
 .tsx-card-heart i { font-size: 15px; }
 .tsx-card-heart.s-product-card-wishlist-added i::before { color: var(--color-error); }
@@ -206,7 +224,10 @@ html[lang="ar"] .tsx-card-name { font-size: 17px; line-height: 1.35; }
 .tsx-card-price .was { color: var(--color-muted); text-decoration: line-through; font-weight: 400; }
 .tsx-card-price .now-sale { color: var(--color-error); }
 .tsx-card-meta { font-family: var(--f-ui); font-size: 10.5px; line-height: 1.35; color: var(--color-muted); margin-top: 5px; }
-@media (min-width: 1024px) { .tsx-card-name { font-size: 16px; } }
+@media (min-width: 1024px) {
+  .tsx-card-name { font-size: 14px; }
+  html[lang="ar"] .tsx-card-name { font-size: 14.5px; }
+}
 
 /* legacy raed card bits that must never resurface */
 .s-product-card-content-footer, .s-product-card-content-subtitle,
@@ -383,24 +404,24 @@ salla-cart-summary-card .s-button-element,
   letter-spacing: 0.14em; text-transform: uppercase;
 }
 
-/* ---------- 11 · FOOTER (light, minimal, single-language) ---------- */
-.store-footer { background: var(--color-ivory) !important; color: var(--color-text); border-top: 1px solid var(--color-border); }
-.store-footer * { color: var(--color-muted); }
-.store-footer a { color: var(--color-muted) !important; transition: color 0.2s; }
-.store-footer a:hover { color: var(--color-petrol) !important; }
-.store-footer .tsx-foot-brand { font-family: var(--f-display); font-size: 20px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-text) !important; }
-html[lang="ar"] .store-footer .tsx-foot-brand { letter-spacing: 0.02em; }
-.store-footer .tsx-foot-desc { font-size: 13px; line-height: 1.7; max-width: 340px; margin-top: 10px; }
+/* ---------- 11 · FOOTER (petrol, single-language, ivory lockup) ---------- */
+.store-footer { background: var(--color-petrol) !important; color: var(--color-ivory); border-top: 0; }
+.store-footer .store-footer__inner { padding-top: clamp(28px, 4vw, 48px); }
+.store-footer * { color: rgba(245, 240, 234, 0.78); }
+.store-footer a { color: rgba(245, 240, 234, 0.78) !important; transition: color 0.2s; }
+.store-footer a:hover { color: var(--color-ivory) !important; }
+.store-footer .tsx-foot-lockup { display: block; width: 200px; max-width: 100%; height: auto; }
+.store-footer .tsx-foot-desc { font-size: 13px; line-height: 1.7; max-width: 340px; margin-top: 14px; }
 .store-footer summary, .store-footer h3, .store-footer .footer-title, .store-footer strong {
-  color: var(--color-text) !important;
+  color: var(--color-ivory) !important;
   font-family: var(--f-ui); font-size: 11px; font-weight: 500;
   letter-spacing: 0.14em; text-transform: uppercase;
   cursor: pointer; list-style: none;
 }
-.store-footer details { border-bottom: 1px solid var(--color-border); padding-block: 14px; }
+.store-footer details { border-bottom: 1px solid rgba(245, 240, 234, 0.16); padding-block: 14px; }
 .store-footer details summary { display: flex; justify-content: space-between; align-items: center; }
 .store-footer details summary::-webkit-details-marker { display: none; }
-.store-footer details summary::after { content: '+'; font-size: 14px; color: var(--color-muted); }
+.store-footer details summary::after { content: '+'; font-size: 14px; color: rgba(245, 240, 234, 0.6); }
 .store-footer details[open] summary::after { content: '−'; }
 .store-footer details a, .store-footer details span, .store-footer details p { display: block; font-size: 13px; padding-block: 5px; }
 @media (min-width: 1024px) {
@@ -409,12 +430,53 @@ html[lang="ar"] .store-footer .tsx-foot-brand { letter-spacing: 0.02em; }
   .store-footer details summary { pointer-events: none; margin-bottom: 12px; }
   .store-footer details[open] summary, .store-footer details summary { cursor: default; }
 }
-.store-footer salla-social a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--color-border) !important; border-radius: 50%; color: var(--color-text) !important; }
-.store-footer salla-apps-icons img, .store-footer salla-payments img { filter: grayscale(1); opacity: 0.72; }
-.store-footer salla-trust-badges { opacity: 0.9; }
-.store-footer .tsx-foot-base { border-top: 1px solid var(--color-border); margin-top: 18px; padding-top: 16px; font-size: 11.5px; letter-spacing: 0.05em; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.store-footer salla-social a { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid rgba(245, 240, 234, 0.28) !important; border-radius: 50%; color: var(--color-ivory) !important; }
+.store-footer salla-apps-icons img { filter: grayscale(1) brightness(1.6); opacity: 0.8; }
+.store-footer salla-payments img { background: var(--color-ivory); border-radius: 3px; padding: 2px 4px; opacity: 0.95; }
+.store-footer salla-trust-badges { opacity: 0.92; }
+.store-footer .tsx-foot-base { border-top: 1px solid rgba(245, 240, 234, 0.16); margin-top: 18px; padding-top: 16px; font-size: 11.5px; letter-spacing: 0.05em; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
 
 /* sheet polish */
 .s-add-product-toast__icon, .s-add-product-toast__icon svg, .s-add-product-toast__icon img { max-width: 40px !important; max-height: 40px !important; }
 .s-add-product-toast__title { letter-spacing: 0.04em !important; white-space: normal; }
 .s-add-product-toast__header-content { align-items: center; }
+
+/* ---------- 12 · v4 PALETTE COHESION (no stray pure-white sections) ---------- */
+/* the ivory ground runs everywhere; white stays only where garments render */
+main, .main-content, .products-page, .container--product-details { background: var(--color-ivory); }
+.main-content section.flex.bg-white,
+.main-content .bg-white:not(.tsx-card-media):not(.details-slider):not(.swiper-slide) {
+  background: var(--color-ivory) !important;
+  border: 0 !important;
+  border-top: 1px solid var(--color-border) !important;
+}
+custom-salla-product-card.s-product-card-entry { background: transparent; }
+.tsx-card-media { background: var(--color-white); } /* imagery exception */
+.details-slider .swiper-slide { background: var(--color-white); }
+.cart-item { background: var(--color-ivory) !important; }
+salla-cart-summary-card, .cart-summary-card { background: var(--color-ivory) !important; border-color: var(--color-border); }
+.tsx-pdp-eyebrow { color: var(--color-gold); }
+
+/* ---------- 13 · SIZE-FIRST PURCHASING ---------- */
+/* PDP add-to-bag stays locked until a valid size is chosen (tsx-luxury.js) */
+salla-add-product-button.tsx-atb-locked button,
+salla-add-product-button.tsx-atb-locked .s-button-element {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+/* cart lines: the chosen size is a read-only fact, not an editor */
+body.tsx-cart-page .cart-item salla-product-options .s-product-options-wrapper,
+body.tsx-cart-page .cart-item salla-product-options .tsx-size-grid,
+body.tsx-cart-page .cart-item salla-product-options .tsx-size-error,
+body.tsx-cart-page .cart-item salla-product-options label { display: none !important; }
+.tsx-line-size {
+  font-family: var(--f-ui); font-size: 12px; color: var(--color-muted);
+  margin-top: 4px; letter-spacing: 0.04em;
+}
+.tsx-line-size b { color: var(--color-text); font-weight: 500; }
+
+/* reduce-motion: films hold their poster and offer manual controls */
+@media (prefers-reduced-motion: reduce) {
+  .hero-video, .moment > video { object-fit: cover; }
+}

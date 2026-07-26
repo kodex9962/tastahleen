@@ -1,4 +1,5 @@
-{# TESTAHLEEN footer (v3) — restrained ivory, single-language, accordion on mobile.
+{# TESTAHLEEN footer (v4) — petrol, single-language, accordion on mobile.
+   Brand = approved ivory wordmark lockup (no typed brand name).
    All dynamic/mandatory blocks preserved: menu, contacts, social, apps,
    payments, trust badges, tax/verification, copyright hook. #}
 <footer class="store-footer">
@@ -8,7 +9,8 @@
 
         <div class="lg:col-span-1">
           <a href="{{ link('/') }}" class="inline-block m-0">
-            <span class="tsx-foot-brand">{{ language.code == 'en' ? 'TESTAHLEEN' : 'تستاهلين' }}</span>
+            <img class="tsx-foot-lockup" src="{{ 'images/tastahleen/brand/testahleen-primary-lockup-reverse.svg' | asset }}"
+                 alt="{{ store.name }}" width="1370" height="180" loading="lazy" />
           </a>
           <p class="tsx-foot-desc">{{ trans('tsx.footer_desc') }}</p>
           <div class="mt-5">

@@ -1,7 +1,7 @@
 {#
-  TESTAHLEEN header (v3) — announcement ribbon + one clean navigation row.
-  Wordmark is typographic (editorial font). Search = compact modal trigger.
-  Language action is the native locale link: `العربية` on EN, `EN` on AR.
+  TESTAHLEEN header (v4) — announcement ribbon + one clean navigation row.
+  Brand = the approved split-T emblem (centred on mobile, 28px; 32px on desktop).
+  No typed wordmark, no store-logo bitmap. Language action is the native locale link.
 #}
 {% set is_en = language.code == 'en' %}
 {% set alt_locale_url = is_en ? (store.url ~ '/ar') : (store.url ~ '/en') %}
@@ -29,8 +29,8 @@
                         <i class="sicon-menu text-2xl"></i>
                       </a>
                       <a class="navbar-brand" href="{{ store.url }}">
-                          <img fetchpriority="high" width="100%" height="100%" loading="eager" src="{{ store.logo|cdn(175) }}" alt="{{ store.name }} logo">
-                          <span class="tsx-wordmark" aria-hidden="true">{{ is_en ? 'TESTAHLEEN' : 'تستاهلين' }}</span>
+                          <img class="tsx-emblem" src="{{ 'images/tastahleen/brand/testahleen-emblem.svg' | asset }}"
+                               alt="{{ store.name }}" width="240" height="240" />
                           {% if is_page('index') %}
                             <h1 class="sr-only">{{ store.name }}</h1>
                           {% else %}

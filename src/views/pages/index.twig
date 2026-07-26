@@ -1,8 +1,8 @@
 {#
-  TESTAHLEEN — continuous editorial homepage (v3, locale-pure).
-  hero film → 4 products → film → 4 products → film → 4 products → packaging film.
-  Three dynamic latest-12 lists; CSS banding 1-4/5-8/9-12 (.band-1/2/3).
-  No category dependency, no hard-coded product data. Copy via locale files only.
+  TESTAHLEEN — editorial homepage (v4, locale-pure).
+  hero film → THE COLLECTION → 2 products → film → 8 products → film → 2 products.
+  Deterministic order via source="selected": the two SAR 490 pieces open the page.
+  Copy via locale files only; never both languages at once.
 #}
 {% extends "layouts.master" %}
 
@@ -17,18 +17,24 @@
     <div class="hero-scrim" aria-hidden="true"></div>
     <div class="hero-copy">
       <h1 class="hero-title">
-        <span class="line hero-brand">{{ language.code == 'en' ? 'TESTAHLEEN' : 'تستاهلين' }}</span>
+        <img class="hero-lockup" src="{{ 'images/tastahleen/brand/testahleen-primary-lockup-reverse.svg' | asset }}"
+             alt="{{ store.name }}" width="1370" height="180" />
         <span class="line hero-sub">{{ trans('tsx.hero_tagline') }}</span>
       </h1>
       <div class="hero-ctas">
-        <a class="btn-hero" href="#edit-1">{{ trans('tsx.shop_now') }}</a>
+        <a class="btn-hero" href="#collection">{{ trans('tsx.shop_now') }}</a>
       </div>
     </div>
   </section>
 
-  <section class="edit-band band-1 reveal" id="edit-1" aria-label="{{ trans('tsx.products_band') }}">
-    <div class="edit-flow ts-salla-grid">
-      <salla-products-list source="latest" limit="12"></salla-products-list>
+  <header class="collection-head reveal" id="collection">
+    <p class="collection-eyebrow">{{ trans('tsx.collection') }}</p>
+  </header>
+
+  {# positions 1–2 · the two SAR 490 pieces #}
+  <section class="edit-band band-pair reveal" id="edit-1" aria-label="{{ trans('tsx.collection') }}">
+    <div class="edit-flow ts-salla-grid" data-tsx-ids="[444298531,3292456]">
+      <salla-products-list source="selected" source-value="[444298531,3292456]" limit="2"></salla-products-list>
     </div>
   </section>
 
@@ -40,32 +46,26 @@
     <div class="moment-caption"><p>{{ trans('tsx.caption_campaign') }}</p></div>
   </section>
 
-  <section class="edit-band band-2 reveal" id="edit-2" aria-label="{{ trans('tsx.products_band') }}">
-    <div class="edit-flow ts-salla-grid">
-      <salla-products-list source="latest" limit="12"></salla-products-list>
+  {# positions 3–10 #}
+  <section class="edit-band band-eight reveal" id="edit-2" aria-label="{{ trans('tsx.collection') }}">
+    <div class="edit-flow ts-salla-grid" data-tsx-ids="[1321031069,2021388572,1524280616,2049188547,301171772,828185047,1269807412,803502890]">
+      <salla-products-list source="selected" source-value="[1321031069,2021388572,1524280616,2049188547,301171772,828185047,1269807412,803502890]" limit="8"></salla-products-list>
     </div>
   </section>
 
-  <section class="moment reveal" aria-label="{{ store.name }}">
-    <video autoplay muted loop playsinline preload="metadata" aria-hidden="true"
-           poster="{{ 'images/tastahleen/video/garment-poster.jpg' | asset }}">
-      <source src="{{ 'images/tastahleen/video/garment.mp4' | asset }}" type="video/mp4" />
-    </video>
-    <div class="moment-caption"><p>{{ trans('tsx.caption_garment') }}</p></div>
-  </section>
-
-  <section class="edit-band band-3 reveal" id="edit-3" aria-label="{{ trans('tsx.products_band') }}">
-    <div class="edit-flow ts-salla-grid">
-      <salla-products-list source="latest" limit="12"></salla-products-list>
-    </div>
-  </section>
-
-  <section class="moment moment-packaging reveal" aria-label="{{ trans('tsx.caption_packaging') }}">
+  <section class="moment moment-packaging reveal" aria-label="{{ store.name }}">
     <video autoplay muted loop playsinline preload="metadata" aria-hidden="true"
            poster="{{ 'images/tastahleen/video/packaging-poster.jpg' | asset }}">
       <source src="{{ 'images/tastahleen/video/packaging.mp4' | asset }}" type="video/mp4" />
     </video>
     <div class="moment-caption"><p>{{ trans('tsx.caption_packaging') }}</p></div>
+  </section>
+
+  {# positions 11–12 #}
+  <section class="edit-band band-pair reveal" id="edit-3" aria-label="{{ trans('tsx.collection') }}">
+    <div class="edit-flow ts-salla-grid" data-tsx-ids="[487813922,704497956]">
+      <salla-products-list source="selected" source-value="[487813922,704497956]" limit="2"></salla-products-list>
+    </div>
   </section>
 
 </div>

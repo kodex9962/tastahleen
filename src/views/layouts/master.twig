@@ -111,10 +111,14 @@
     </script>
 
     {# TESTAHLEEN: self-hosted licensed fonts (OFL) — no runtime Google Fonts #}
+    {% if language.code == 'en' %}
     <link rel="preload" href="{{ 'fonts/PlayfairDisplay-500-latin.woff2' | asset }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ 'fonts/Newsreader-400-500-latin.woff2' | asset }}" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{{ 'fonts/Inter-400-latin.woff2' | asset }}" as="font" type="font/woff2" crossorigin>
+    {% else %}
     <link rel="preload" href="{{ 'fonts/NotoNaskhArabic-500-arabic.woff2' | asset }}" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{{ 'fonts/IBMPlexSansArabic-400-arabic.woff2' | asset }}" as="font" type="font/woff2" crossorigin>
+    {% endif %}
     <link rel="stylesheet" href="{{ 'fonts/fonts.css' | asset }}">
 
     {% hook 'head:start' %}
