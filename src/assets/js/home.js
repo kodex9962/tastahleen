@@ -32,6 +32,8 @@ class Home extends BasePage {
                 v.setAttribute('muted', '');
                 v.setAttribute('playsinline', '');
                 v.loop = true;
+                v.removeAttribute('controls');   // decorative films are never interactive
+                v.controls = false;
                 if (!reduceMotion) v.setAttribute('autoplay', '');
             } catch (e) {}
         };
@@ -52,7 +54,8 @@ class Home extends BasePage {
         videos.forEach(arm);
 
         if (reduceMotion) {
-            videos.forEach(v => { try { v.removeAttribute('autoplay'); v.pause(); v.setAttribute('controls', ''); } catch (e) {} });
+            // clean poster frame only — no controls, no play affordance
+            videos.forEach(v => { try { v.removeAttribute('autoplay'); v.removeAttribute('controls'); v.controls = false; v.pause(); } catch (e) {} });
         } else {
             kickInView();
             window.addEventListener('load', kickInView, { once: true });
