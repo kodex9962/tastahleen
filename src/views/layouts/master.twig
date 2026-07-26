@@ -96,13 +96,18 @@
             var base = u.pathname.split('/').filter(Boolean);
             var j = -1;
             for (var k = 0; k < base.length; k++) if (isLoc(base[k])) { j = k; break; }
-            if (j >= 0) { base[j] = 'en'; } else { base.push('en'); }
-            var basePath = u.pathname.replace(/\/$/, '');
-            var rel = basePath && location.pathname.indexOf(basePath) === 0
-              ? location.pathname.slice(basePath.length)
-              : (location.pathname === '/' ? '' : location.pathname);
+            var target = base.slice();
+            if (j >= 0) { target[j] = 'en'; } else { target.push('en'); }
+            // remainder = current segments minus the base's own non-locale
+            // segments (a locale-less entry may already start with them,
+            // e.g. salla.design/<store> vs base salla.design/ar/<store>)
+            var noLoc = [];
+            for (var m = 0; m < base.length; m++) if (!isLoc(base[m])) noLoc.push(base[m]);
+            var d = 0;
+            while (d < noLoc.length && here[d] === noLoc[d]) d++;
+            var rel = here.slice(d).join('/');
             localStorage.setItem('tsx-lang', 'en');
-            location.replace(u.origin + '/' + base.join('/') + rel + location.search);
+            location.replace(u.origin + '/' + target.join('/') + (rel ? '/' + rel : '') + location.search);
           } else if (!pref) {
             localStorage.setItem('tsx-lang', cur);
           }
