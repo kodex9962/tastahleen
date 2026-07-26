@@ -10,7 +10,7 @@
 <div class="ts-home">
 
   <section class="hero" id="hero" aria-label="{{ store.name }}">
-    <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true"
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"
            poster="{{ 'images/tastahleen/video/hero-poster.jpg' | asset }}">
       <source src="{{ 'images/tastahleen/video/hero.mp4' | asset }}" type="video/mp4" />
     </video>
@@ -39,7 +39,7 @@
   </section>
 
   <section class="moment reveal" aria-label="{{ store.name }}">
-    <video autoplay muted loop playsinline preload="metadata" aria-hidden="true"
+    <video autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"
            poster="{{ 'images/tastahleen/video/campaign-poster.jpg' | asset }}">
       <source src="{{ 'images/tastahleen/video/campaign.mp4' | asset }}" type="video/mp4" />
     </video>
@@ -54,7 +54,7 @@
   </section>
 
   <section class="moment moment-packaging reveal" aria-label="{{ store.name }}">
-    <video autoplay muted loop playsinline preload="metadata" aria-hidden="true"
+    <video autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"
            poster="{{ 'images/tastahleen/video/packaging-poster.jpg' | asset }}">
       <source src="{{ 'images/tastahleen/video/packaging.mp4' | asset }}" type="video/mp4" />
     </video>
