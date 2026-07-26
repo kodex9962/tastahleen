@@ -235,7 +235,10 @@
     setTimeout(lockAtb, 1500);
   });
 
-  /* ---------- 7 · cart lines: read-only per-line size ---------- */
+  /* ---------- 7 · cart lines: read-only per-line size ----------
+     Writes are change-detected and the observer is rAF-coalesced: an
+     unconditional rewrite would itself mutate the DOM and re-fire the
+     observer forever, pinning the cart page's main thread. */
   function cartSizes() {
     if (!isCartPage()) return;
     document.body.classList.add('tsx-cart-page');
@@ -258,6 +261,8 @@
         const nameEl = item.querySelector('.text-gray-900, h2, h3, a[href*="/p"]');
         (nameEl && nameEl.parentElement ? nameEl.parentElement : item).appendChild(line);
       }
+      if (line.dataset.tsxLabel === label) return; // no-op when unchanged
+      line.dataset.tsxLabel = label;
       line.textContent = '';
       line.append(t('Size: ', 'المقاس: '));
       const b = document.createElement('b');
@@ -268,6 +273,8 @@
   document.addEventListener('DOMContentLoaded', () => {
     if (!isCartPage()) return;
     cartSizes();
-    new MutationObserver(() => cartSizes()).observe(document.body, { childList: true, subtree: true });
+    let raf = 0;
+    const schedule = () => { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; cartSizes(); }); };
+    new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true });
   });
 })();
