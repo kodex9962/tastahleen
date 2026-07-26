@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <defs>
+    <mask id="mark-cut">
+      <rect width="240" height="240" fill="black"/>
+      <g transform="translate(33 -38) scale(1.25)">
+        <path fill="white" d="M37.6 200L37.8 198H38C45.2 198 49.1 196.5 52 193.6C54.9 190.7 54 185.6 54 182V52.8H48.2C38.4 52.8 29 56 19.6 59C12.8 67.2 6 75.2 3.6 90.4H1.6L7.2 50H131.8L137.6 90.4H135.6C133.2 75.4 126.2 67.2 119.4 59C109.8 56 100.4 52.8 90.2 52.8H85V182C85 189.2 86.5 193.1 89.4 196C92.3 198.9 97.4 198 101 198L101.2 200Z"/>
+        <path d="M69.6 52.8V138" fill="none" stroke="black" stroke-width="5" stroke-linecap="butt"/>
+        <path d="M67.1 137.5H72.1L69.6 146Z" fill="black"/>
+      </g>
+    </mask>
+  </defs>
+  <rect width="240" height="240" fill="#071D25" mask="url(#mark-cut)"/>
+</svg>
